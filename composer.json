@@ -1,0 +1,63 @@
+{
+    "name": "gember/event-sourcing-universal-service-provider",
+    "description": "Universal service provider for Gember Event Sourcing (gember/event-sourcing)",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "gember",
+        "event-sourcing",
+        "domain-driven-design",
+        "ddd",
+        "dynamic-consistency-boundary",
+        "dcb",
+        "container-interop",
+        "universal-service-provider"
+    ],
+    "authors": [
+        {
+            "name": "Jeroen de Graaf",
+            "email": "gember@jero.work",
+            "homepage": "https://jero.work"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "gember/cache-psr": "^0.1",
+        "gember/event-sourcing": "^0.1",
+        "gember/file-finder-symfony": "^0.1",
+        "gember/file-reflector-roave": "^0.1",
+        "gember/identity-generator-symfony": "^0.1",
+        "gember/message-bus-symfony": "^0.1",
+        "gember/rdbms-event-store-doctrine-dbal": "^0.1",
+        "gember/serializer-symfony": "^0.1"
+    },
+    "require-dev": {
+        "captainhook/captainhook": "^5.23",
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.0",
+        "shipmonk/composer-dependency-analyser": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gember\\EventSourcingUniversalServiceProvider\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "cs": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
+        "cs:dry-run": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
+        "dependency-analyser": "vendor/bin/composer-dependency-analyser",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon",
+        "rector": "vendor/bin/rector process --ansi",
+        "rector:dry-run": "vendor/bin/rector process --ansi --dry-run",
+        "test": [
+            "@rector:dry-run",
+            "@cs:dry-run",
+            "@phpstan",
+            "@dependency-analyser"
+        ]
+    }
+}
