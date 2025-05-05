@@ -62,12 +62,53 @@ use Gember\RdbmsEventStoreDoctrineDbal\TableSchema\TableSchemaFactory;
 use Gember\SerializerSymfony\SymfonySerializer;
 use Interop\Container\ServiceProviderInterface;
 use Override;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Psr16Cache;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Serializer as SerializerFromSymfony;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Factory\UlidFactory;
 use Symfony\Component\Uid\Factory\UuidFactory;
+use Exception;
 
+/**
+ * @phpstan-type ConfigurationPayload array{
+ *      message_bus?: array{
+ *          symfony?: array{
+ *              event_bus?: MessageBusInterface
+ *          }
+ *      },
+ *      cache?: array{
+ *          enabled?: boolean,
+ *          psr6?: CacheItemPoolInterface,
+ *          psr16?: CacheInterface
+ *      },
+ *      serializer?: array{
+ *          symfony?: array{
+ *              serializer?: SerializerInterface
+ *          }
+ *      },
+ *      event_store?: array{
+ *          rdbms?: array{
+ *              doctrine_dbal?: array{
+ *                  connection?: Connection
+ *              }
+ *          }
+ *      },
+ *      generator?: array{
+ *          identity?: array{
+ *              service?: IdentityGenerator
+ *          }
+ *      },
+ *      event_registry?: array{
+ *          reflector?: array{
+ *              path?: string
+ *          }
+ *      }
+ *  }
+ */
 final readonly class GemberEventSourcingServiceProvider implements ServiceProviderInterface
 {
     #[Override]
@@ -112,7 +153,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createAttributeResolver(ContainerInterface $container): AttributeResolver
     {
-        $cacheEnabled = $container->get('gember_event_sourcing')['cache']['enabled'] ?? false;
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
 
         $resolver = new ReflectorAttributeResolver();
 
@@ -129,13 +170,17 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createCache(ContainerInterface $container): Cache
     {
-        $psr6Adapter = $container->get('gember_event_sourcing')['cache']['psr6'] ?? null;
+        $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
 
         if ($psr6Adapter !== null) {
             return new PsrSimpleCache(new Psr16Cache($psr6Adapter));
         }
 
-        return new PsrSimpleCache($container->get('gember_event_sourcing')['cache']['psr16']);
+        if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+            throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+        }
+
+        return new PsrSimpleCache(self::getConfiguration($container)['cache']['psr16']);
     }
 
     public static function createClock(): Clock
@@ -183,20 +228,20 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createEventBus(ContainerInterface $container): EventBus
     {
         return new SymfonyEventBus(
-            $container->get('gember_event_sourcing')['message_bus']['symfony']['event_bus']
+            self::getConfiguration($container)['message_bus']['symfony']['event_bus']
             ?? $container->get('event.bus'),
         );
     }
 
     public static function createEventRegistry(ContainerInterface $container): EventRegistry
     {
-        $cacheEnabled = $container->get('gember_event_sourcing')['cache']['enabled'] ?? false;
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
 
         $registry = new ReflectorEventRegistry(
             $container->get(Finder::class),
             $container->get(Reflector::class),
             $container->get(NormalizedEventNameResolver::class),
-            $container->get('gember_event_sourcing')['event_registry']['reflector']['path']
+            self::getConfiguration($container)['event_registry']['reflector']['path']
             ?? getcwd() . '/../src',
         );
 
@@ -239,7 +284,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createIdentityGenerator(ContainerInterface $container): IdentityGenerator
     {
-        return $container->get('gember_event_sourcing')['generator']['identity']['service']
+        return self::getConfiguration($container)['generator']['identity']['service']
             ?? $container->get(SymfonyUuidIdentityGenerator::class);
     }
 
@@ -276,7 +321,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createRdbmsEventStoreRepository(ContainerInterface $container): RdbmsEventStoreRepository
     {
         return new DoctrineDbalRdbmsEventStoreRepository(
-            $container->get('gember_event_sourcing')['event_store']['rdbms']['doctrine_dbal']['connection']
+            self::getConfiguration($container)['event_store']['rdbms']['doctrine_dbal']['connection']
             ?? $container->get(Connection::class),
             $container->get(EventStoreTableSchema::class),
             $container->get(EventStoreRelationTableSchema::class),
@@ -292,7 +337,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createSerializer(ContainerInterface $container): Serializer
     {
         return new SymfonySerializer(
-            $container->get('gember_event_sourcing')['serializer']['symfony']['serializer']
+            self::getConfiguration($container)['serializer']['symfony']['serializer']
             ?? $container->get(SerializerFromSymfony::class),
         );
     }
@@ -315,5 +360,14 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createSymfonyUuidIdentityGenerator(ContainerInterface $container): SymfonyUuidIdentityGenerator
     {
         return new SymfonyUuidIdentityGenerator($container->get(UuidFactory::class));
+    }
+
+    /**
+     * @return ConfigurationPayload
+     */
+    private static function getConfiguration(ContainerInterface $container): array
+    {
+        /** @var ConfigurationPayload */
+        return $container->get('gember_event_sourcing');
     }
 }

@@ -23,6 +23,7 @@
     "require": {
         "php": "^8.3",
         "container-interop/service-provider": "^0.4.1",
+        "doctrine/dbal": "^4.2",
         "gember/cache-psr": "^0.1",
         "gember/event-sourcing": "^0.1",
         "gember/file-finder-symfony": "^0.1",
@@ -31,7 +32,10 @@
         "gember/message-bus-symfony": "^0.1",
         "gember/rdbms-event-store-doctrine-dbal": "^0.1",
         "gember/serializer-symfony": "^0.1",
-        "symfony/cache": "^7.2"
+        "psr/container": "^2.0",
+        "symfony/cache": "^7.2",
+        "symfony/serializer": "^7.2",
+        "symfony/uid": "^7.2"
     },
     "require-dev": {
         "captainhook/captainhook": "^5.23",
@@ -53,6 +57,7 @@
         "cs:dry-run": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
         "dependency-analyser": "vendor/bin/composer-dependency-analyser",
         "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon",
+        "phpstan:baseline": "vendor/bin/phpstan analyse -c phpstan.neon --generate-baseline phpstan-baseline.php src",
         "rector": "vendor/bin/rector process --ansi",
         "rector:dry-run": "vendor/bin/rector process --ansi --dry-run",
         "test": [
