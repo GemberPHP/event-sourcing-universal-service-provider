@@ -11,7 +11,7 @@
         "dynamic-consistency-boundary",
         "dcb",
         "container-interop",
-        "universal-service-provider"
+        "service-provider"
     ],
     "authors": [
         {
@@ -34,6 +34,7 @@
         "gember/serializer-symfony": "^0.1",
         "psr/container": "^2.0",
         "symfony/cache": "^7.2",
+        "symfony/property-access": "^7.2",
         "symfony/serializer": "^7.2",
         "symfony/uid": "^7.2"
     },
