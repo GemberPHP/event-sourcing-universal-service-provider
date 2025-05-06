@@ -102,9 +102,11 @@ use Exception;
  *              service?: IdentityGenerator
  *          }
  *      },
- *      event_registry?: array{
- *          reflector?: array{
- *              path?: string
+ *      registry?: array{
+ *          event_registry?: array{
+ *              reflector?: array{
+ *                  path?: string
+ *              }
  *          }
  *      }
  *  }
@@ -241,7 +243,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(Finder::class),
             $container->get(Reflector::class),
             $container->get(NormalizedEventNameResolver::class),
-            self::getConfiguration($container)['event_registry']['reflector']['path']
+            self::getConfiguration($container)['registry']['event_registry']['reflector']['path']
             ?? getcwd() . '/../src',
         );
 
