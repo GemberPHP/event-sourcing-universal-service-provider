@@ -15,14 +15,14 @@ use Gember\EventSourcing\EventStore\Rdbms\RdbmsEventStoreRepository;
 use Gember\EventSourcing\Registry\Cached\CachedEventRegistryDecorator;
 use Gember\EventSourcing\Registry\EventRegistry;
 use Gember\EventSourcing\Registry\Reflector\ReflectorEventRegistry;
-use Gember\EventSourcing\Repository\DomainContextRepository;
-use Gember\EventSourcing\Repository\EventSourced\EventSourcedDomainContextRepository;
-use Gember\EventSourcing\Resolver\DomainContext\DomainIdProperties\Attribute\AttributeDomainIdPropertiesResolver;
-use Gember\EventSourcing\Resolver\DomainContext\DomainIdProperties\DomainIdPropertiesResolver;
-use Gember\EventSourcing\Resolver\DomainContext\SubscribedEvents\Attribute\AttributeSubscribedEventsResolver;
-use Gember\EventSourcing\Resolver\DomainContext\SubscribedEvents\SubscribedEventsResolver;
-use Gember\EventSourcing\Resolver\DomainContext\SubscriberMethodForEvent\Attribute\AttributeSubscriberMethodForEventResolver;
-use Gember\EventSourcing\Resolver\DomainContext\SubscriberMethodForEvent\SubscriberMethodForEventResolver;
+use Gember\EventSourcing\Repository\UseCaseRepository;
+use Gember\EventSourcing\Repository\EventSourced\EventSourcedUseCaseRepository;
+use Gember\EventSourcing\Resolver\UseCase\DomainIdProperties\Attribute\AttributeDomainIdPropertiesResolver;
+use Gember\EventSourcing\Resolver\UseCase\DomainIdProperties\DomainIdPropertiesResolver;
+use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\Attribute\AttributeSubscribedEventsResolver;
+use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\SubscribedEventsResolver;
+use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\Attribute\AttributeSubscriberMethodForEventResolver;
+use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\SubscriberMethodForEventResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\Attribute\AttributeDomainIdsResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\DomainIdsResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\Interface\InterfaceDomainIdsResolver;
@@ -121,7 +121,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             Cache::class => self::createCache(...),
             Clock::class => self::createClock(...),
             DoctrineDbalRdbmsEventFactory::class => self::createDoctrineDbalRdbmsEventFactory(...),
-            DomainContextRepository::class => self::createDomainContextRepository(...),
+            UseCaseRepository::class => self::createUseCaseRepository(...),
             DomainEventEnvelopeFactory::class => self::createDomainEventEnvelopeFactory(...),
             DomainIdPropertiesResolver::class => self::createDomainIdPropertiesResolver(...),
             DomainIdsResolver::class => self::createDomainIdsResolver(...),
@@ -195,9 +195,9 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return new DoctrineDbalRdbmsEventFactory();
     }
 
-    public static function createDomainContextRepository(ContainerInterface $container): DomainContextRepository
+    public static function createUseCaseRepository(ContainerInterface $container): UseCaseRepository
     {
-        return new EventSourcedDomainContextRepository(
+        return new EventSourcedUseCaseRepository(
             $container->get(EventStore::class),
             $container->get(DomainEventEnvelopeFactory::class),
             $container->get(SubscribedEventsResolver::class),
