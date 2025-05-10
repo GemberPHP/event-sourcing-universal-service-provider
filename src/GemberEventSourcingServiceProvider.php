@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Gember\EventSourcingUniversalServiceProvider;
 
 use Doctrine\DBAL\Connection;
-use Gember\CachePsr\PsrSimpleCache;
 use Gember\EventSourcing\EventStore\DomainEventEnvelopeFactory;
 use Gember\EventSourcing\EventStore\EventStore;
 use Gember\EventSourcing\EventStore\Rdbms\RdbmsDomainEventEnvelopeFactory;
@@ -35,7 +34,6 @@ use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Stacked\Stacke
 use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
 use Gember\EventSourcing\Util\Attribute\Resolver\Cached\CachedAttributeResolverDecorator;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
-use Gember\EventSourcing\Util\Cache\Cache;
 use Gember\EventSourcing\Util\File\Finder\Finder;
 use Gember\EventSourcing\Util\File\Reflector\Reflector;
 use Gember\EventSourcing\Util\Generator\Identity\IdentityGenerator;
@@ -118,7 +116,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     {
         return [
             AttributeResolver::class => self::createAttributeResolver(...),
-            Cache::class => self::createCache(...),
             Clock::class => self::createClock(...),
             DoctrineDbalRdbmsEventFactory::class => self::createDoctrineDbalRdbmsEventFactory(...),
             UseCaseRepository::class => self::createUseCaseRepository(...),
@@ -160,29 +157,26 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         $resolver = new ReflectorAttributeResolver();
 
         if ($cacheEnabled) {
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
             return new CachedAttributeResolverDecorator(
                 $resolver,
                 $container->get(FriendlyClassNamer::class),
-                $container->get(Cache::class),
+                $cache,
             );
         }
 
         return $resolver;
-    }
-
-    public static function createCache(ContainerInterface $container): Cache
-    {
-        $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
-
-        if ($psr6Adapter !== null) {
-            return new PsrSimpleCache(new Psr16Cache($psr6Adapter));
-        }
-
-        if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
-            throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
-        }
-
-        return new PsrSimpleCache(self::getConfiguration($container)['cache']['psr16']);
     }
 
     public static function createClock(): Clock
@@ -248,7 +242,19 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         );
 
         if ($cacheEnabled) {
-            return new CachedEventRegistryDecorator($registry, $container->get(Cache::class));
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
+            return new CachedEventRegistryDecorator($registry, $cache);
         }
 
         return $registry;
