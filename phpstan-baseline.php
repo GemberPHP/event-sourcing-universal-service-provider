@@ -2,12 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Method Gember\\\\EventSourcingUniversalServiceProvider\\\\GemberEventSourcingServiceProvider\\:\\:createCache\\(\\) return type with generic interface Gember\\\\EventSourcing\\\\Util\\\\Cache\\\\Cache does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Gember\\\\EventSourcingUniversalServiceProvider\\\\GemberEventSourcingServiceProvider\\:\\:createIdentityGenerator\\(\\) should return Gember\\\\EventSourcing\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -122,12 +116,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$cache of class Gember\\\\EventSourcing\\\\Registry\\\\Cached\\\\CachedEventRegistryDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\Cache\\\\Cache\\<class\\-string\\>, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$domainEventEnvelopeFactory of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsDomainEventEnvelopeFactory, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -171,12 +159,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$serializer of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory constructor expects Gember\\\\EventSourcing\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$cache of class Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\Cached\\\\CachedAttributeResolverDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\Cache\\\\Cache\\<string\\>, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
