@@ -16,16 +16,16 @@ use Gember\EventSourcing\Registry\EventRegistry;
 use Gember\EventSourcing\Registry\Reflector\ReflectorEventRegistry;
 use Gember\EventSourcing\Repository\UseCaseRepository;
 use Gember\EventSourcing\Repository\EventSourced\EventSourcedUseCaseRepository;
-use Gember\EventSourcing\Resolver\UseCase\DomainIdProperties\Attribute\AttributeDomainIdPropertiesResolver;
-use Gember\EventSourcing\Resolver\UseCase\DomainIdProperties\DomainIdPropertiesResolver;
+use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\Attribute\AttributeDomainTagsPropertiesResolver;
+use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\DomainTagsPropertiesResolver;
 use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\Attribute\AttributeSubscribedEventsResolver;
 use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\SubscribedEventsResolver;
 use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\Attribute\AttributeSubscriberMethodForEventResolver;
 use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\SubscriberMethodForEventResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\Attribute\AttributeDomainIdsResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\DomainIdsResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\Interface\InterfaceDomainIdsResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\DomainIds\Stacked\StackedDomainIdsResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\DomainTags\Attribute\AttributeDomainTagsResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\DomainTags\DomainTagsResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\DomainTags\Interface\InterfaceDomainTagsResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\DomainTags\Stacked\StackedDomainTagsResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Attribute\AttributeNormalizedEventNameResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\ClassName\ClassNameNormalizedEventNameResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Interface\InterfaceNormalizedEventNameResolver;
@@ -120,8 +120,8 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             DoctrineDbalRdbmsEventFactory::class => self::createDoctrineDbalRdbmsEventFactory(...),
             UseCaseRepository::class => self::createUseCaseRepository(...),
             DomainEventEnvelopeFactory::class => self::createDomainEventEnvelopeFactory(...),
-            DomainIdPropertiesResolver::class => self::createDomainIdPropertiesResolver(...),
-            DomainIdsResolver::class => self::createDomainIdsResolver(...),
+            DomainTagsPropertiesResolver::class => self::createDomainTagsPropertiesResolver(...),
+            DomainTagsResolver::class => self::createDomainTagsResolver(...),
             EventBus::class => self::createEventBus(...),
             EventRegistry::class => self::createEventRegistry(...),
             EventStore::class => self::createEventStore(...),
@@ -202,22 +202,22 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createDomainEventEnvelopeFactory(ContainerInterface $container): DomainEventEnvelopeFactory
     {
         return new DomainEventEnvelopeFactory(
-            $container->get(DomainIdsResolver::class),
+            $container->get(DomainTagsResolver::class),
             $container->get(IdentityGenerator::class),
             $container->get(Clock::class),
         );
     }
 
-    public static function createDomainIdPropertiesResolver(ContainerInterface $container): DomainIdPropertiesResolver
+    public static function createDomainTagsPropertiesResolver(ContainerInterface $container): DomainTagsPropertiesResolver
     {
-        return new AttributeDomainIdPropertiesResolver($container->get(AttributeResolver::class));
+        return new AttributeDomainTagsPropertiesResolver($container->get(AttributeResolver::class));
     }
 
-    public static function createDomainIdsResolver(ContainerInterface $container): DomainIdsResolver
+    public static function createDomainTagsResolver(ContainerInterface $container): DomainTagsResolver
     {
-        return new StackedDomainIdsResolver([
-            new AttributeDomainIdsResolver($container->get(AttributeResolver::class)),
-            new InterfaceDomainIdsResolver(),
+        return new StackedDomainTagsResolver([
+            new AttributeDomainTagsResolver($container->get(AttributeResolver::class)),
+            new InterfaceDomainTagsResolver(),
         ]);
     }
 

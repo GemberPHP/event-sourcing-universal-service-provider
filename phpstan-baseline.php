@@ -8,7 +8,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainIds\\\\Attribute\\\\AttributeDomainIdsResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainTags\\\\Attribute\\\\AttributeDomainTagsResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -20,7 +20,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\DomainIdProperties\\\\Attribute\\\\AttributeDomainIdPropertiesResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\DomainTagProperties\\\\Attribute\\\\AttributeDomainTagsPropertiesResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -44,13 +44,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventBus of class Gember\\\\MessageBusSymfony\\\\SymfonyEventBus constructor expects Symfony\\\\Component\\\\Messenger\\\\MessageBusInterface, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$domainTagsResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainTags\\\\DomainTagsResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventDomainIdsResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainIds\\\\DomainIdsResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$eventBus of class Gember\\\\MessageBusSymfony\\\\SymfonyEventBus constructor expects Symfony\\\\Component\\\\Messenger\\\\MessageBusInterface, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
