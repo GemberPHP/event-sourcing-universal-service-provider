@@ -57,7 +57,13 @@ return [
             ],
         ],
         'registry' => [
-            'event_registry' => [
+            'event' => [
+                'reflector' => [
+                    'path' => '/path/to/src',
+                    // default: getcwd() . '/../src'
+                ],
+            ],
+            'command_handler' => [
                 'reflector' => [
                     'path' => '/path/to/src',
                     // default: getcwd() . '/../src'

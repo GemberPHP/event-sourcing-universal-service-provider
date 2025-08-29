@@ -11,11 +11,16 @@ use Gember\EventSourcing\EventStore\Rdbms\RdbmsDomainEventEnvelopeFactory;
 use Gember\EventSourcing\EventStore\Rdbms\RdbmsEventFactory;
 use Gember\EventSourcing\EventStore\Rdbms\RdbmsEventStore;
 use Gember\EventSourcing\EventStore\Rdbms\RdbmsEventStoreRepository;
+use Gember\EventSourcing\Registry\CommandHandler\Cached\CachedCommandHandlerRegistryDecorator;
+use Gember\EventSourcing\Registry\CommandHandler\CommandHandlerRegistry;
+use Gember\EventSourcing\Registry\CommandHandler\Reflector\ReflectorCommandHandlerRegistry;
 use Gember\EventSourcing\Registry\Event\Cached\CachedEventRegistryDecorator;
 use Gember\EventSourcing\Registry\Event\EventRegistry;
 use Gember\EventSourcing\Registry\Event\Reflector\ReflectorEventRegistry;
 use Gember\EventSourcing\Repository\UseCaseRepository;
 use Gember\EventSourcing\Repository\EventSourced\EventSourcedUseCaseRepository;
+use Gember\EventSourcing\Resolver\UseCase\CommandHandlers\Attribute\AttributeCommandHandlersResolver;
+use Gember\EventSourcing\Resolver\UseCase\CommandHandlers\CommandHandlersResolver;
 use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\Attribute\AttributeDomainTagsPropertiesResolver;
 use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\DomainTagsPropertiesResolver;
 use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\Attribute\AttributeSubscribedEventsResolver;
@@ -31,6 +36,7 @@ use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\ClassName\Clas
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Interface\InterfaceNormalizedEventNameResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\NormalizedEventNameResolver;
 use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Stacked\StackedNormalizedEventNameResolver;
+use Gember\EventSourcing\UseCase\CommandHandler\UseCaseCommandHandler;
 use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
 use Gember\EventSourcing\Util\Attribute\Resolver\Cached\CachedAttributeResolverDecorator;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
@@ -101,7 +107,12 @@ use Exception;
  *          }
  *      },
  *      registry?: array{
- *          event_registry?: array{
+ *          event?: array{
+ *              reflector?: array{
+ *                  path?: string
+ *              }
+ *          },
+ *          command_handler?: array{
  *              reflector?: array{
  *                  path?: string
  *              }
@@ -141,6 +152,9 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             SubscriberMethodForEventResolver::class => self::createSubscriberMethodForEventResolver(...),
             SymfonyUlidIdentityGenerator::class => self::createSymfonyUlidIdentityGenerator(...),
             SymfonyUuidIdentityGenerator::class => self::createSymfonyUuidIdentityGenerator(...),
+            CommandHandlerRegistry::class => self::createCommandHandlerRegistry(...),
+            CommandHandlersResolver::class => self::createCommandHandlersResolver(...),
+            UseCaseCommandHandler::class => self::createUseCaseCommandHandler(...),
         ];
     }
 
@@ -237,7 +251,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(Finder::class),
             $container->get(Reflector::class),
             $container->get(NormalizedEventNameResolver::class),
-            self::getConfiguration($container)['registry']['event_registry']['reflector']['path']
+            self::getConfiguration($container)['registry']['event']['reflector']['path']
             ?? getcwd() . '/../src',
         );
 
@@ -368,6 +382,51 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createSymfonyUuidIdentityGenerator(ContainerInterface $container): SymfonyUuidIdentityGenerator
     {
         return new SymfonyUuidIdentityGenerator($container->get(UuidFactory::class));
+    }
+
+    public static function createCommandHandlerRegistry(ContainerInterface $container): CommandHandlerRegistry
+    {
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
+
+        $registry = new ReflectorCommandHandlerRegistry(
+            $container->get(Finder::class),
+            $container->get(Reflector::class),
+            $container->get(CommandHandlersResolver::class),
+            self::getConfiguration($container)['registry']['command_handler']['reflector']['path']
+            ?? getcwd() . '/../src',
+        );
+
+        if ($cacheEnabled) {
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
+            return new CachedCommandHandlerRegistryDecorator($registry, $cache, $container->get(FriendlyClassNamer::class));
+        }
+
+        return $registry;
+    }
+
+    public static function createCommandHandlersResolver(ContainerInterface $container): CommandHandlersResolver
+    {
+        return new AttributeCommandHandlersResolver($container->get(AttributeResolver::class));
+    }
+
+    public static function createUseCaseCommandHandler(ContainerInterface $container): UseCaseCommandHandler
+    {
+        return new UseCaseCommandHandler(
+            $container->get(UseCaseRepository::class),
+            $container->get(CommandHandlersResolver::class),
+            $container->get(DomainTagsResolver::class),
+        );
     }
 
     /**
