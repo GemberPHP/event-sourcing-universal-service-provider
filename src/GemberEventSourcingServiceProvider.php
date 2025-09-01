@@ -41,6 +41,7 @@ use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
 use Gember\EventSourcing\Util\Attribute\Resolver\Cached\CachedAttributeResolverDecorator;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
 use Gember\EventSourcing\Util\File\Finder\Finder;
+use Gember\EventSourcing\Util\File\Reflector\Native\NativeReflector;
 use Gember\EventSourcing\Util\File\Reflector\Reflector;
 use Gember\EventSourcing\Util\Generator\Identity\IdentityGenerator;
 use Gember\EventSourcing\Util\Messaging\MessageBus\EventBus;
@@ -53,8 +54,6 @@ use Gember\EventSourcing\Util\Time\Clock\Clock;
 use Gember\EventSourcing\Util\Time\Clock\Native\NativeClock;
 use Gember\FileFinderSymfony\SymfonyFinder;
 use Gember\FileFinderSymfony\SymfonyFinderFactory;
-use Gember\FileReflectorRoave\RoaveBetterReflectionFactory;
-use Gember\FileReflectorRoave\RoaveBetterReflectionReflector;
 use Gember\IdentityGeneratorSymfony\Ulid\SymfonyUlidIdentityGenerator;
 use Gember\IdentityGeneratorSymfony\Uuid\SymfonyUuidIdentityGenerator;
 use Gember\MessageBusSymfony\SymfonyEventBus;
@@ -353,7 +352,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createReflector(): Reflector
     {
-        return new RoaveBetterReflectionReflector(new RoaveBetterReflectionFactory());
+        return new NativeReflector();
     }
 
     public static function createSerializer(ContainerInterface $container): Serializer
