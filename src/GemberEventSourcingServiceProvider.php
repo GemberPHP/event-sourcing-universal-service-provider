@@ -41,6 +41,7 @@ use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
 use Gember\EventSourcing\Util\Attribute\Resolver\Cached\CachedAttributeResolverDecorator;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
 use Gember\EventSourcing\Util\File\Finder\Finder;
+use Gember\EventSourcing\Util\File\Finder\Native\NativeFinder;
 use Gember\EventSourcing\Util\File\Reflector\Native\NativeReflector;
 use Gember\EventSourcing\Util\File\Reflector\Reflector;
 use Gember\EventSourcing\Util\Generator\Identity\IdentityGenerator;
@@ -52,8 +53,6 @@ use Gember\EventSourcing\Util\String\Inflector\Inflector;
 use Gember\EventSourcing\Util\String\Inflector\Native\NativeInflector;
 use Gember\EventSourcing\Util\Time\Clock\Clock;
 use Gember\EventSourcing\Util\Time\Clock\Native\NativeClock;
-use Gember\FileFinderSymfony\SymfonyFinder;
-use Gember\FileFinderSymfony\SymfonyFinderFactory;
 use Gember\IdentityGeneratorSymfony\Ulid\SymfonyUlidIdentityGenerator;
 use Gember\IdentityGeneratorSymfony\Uuid\SymfonyUuidIdentityGenerator;
 use Gember\MessageBusSymfony\SymfonyEventBus;
@@ -295,7 +294,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createFileFinder(): Finder
     {
-        return new SymfonyFinder(new SymfonyFinderFactory());
+        return new NativeFinder();
     }
 
     public static function createFriendlyClassNamer(ContainerInterface $container): FriendlyClassNamer
