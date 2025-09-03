@@ -2,7 +2,7 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-	'message' => '#^Method Gember\\\\EventSourcingUniversalServiceProvider\\\\GemberEventSourcingServiceProvider\\:\\:createIdentityGenerator\\(\\) should return Gember\\\\EventSourcing\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator but returns mixed\\.$#',
+	'message' => '#^Method Gember\\\\EventSourcingUniversalServiceProvider\\\\GemberEventSourcingServiceProvider\\:\\:createIdentityGenerator\\(\\) should return Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator but returns mixed\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -110,7 +110,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$serializer of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsDomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$serializer of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsDomainEventEnvelopeFactory constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -170,7 +170,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -188,7 +188,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$serializer of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory constructor expects Gember\\\\EventSourcing\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
+	'message' => '#^Parameter \\#2 \\$serializer of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -242,7 +242,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$eventBus of class Gember\\\\EventSourcing\\\\Repository\\\\EventSourced\\\\EventSourcedUseCaseRepository constructor expects Gember\\\\EventSourcing\\\\Util\\\\Messaging\\\\MessageBus\\\\EventBus, mixed given\\.$#',
+	'message' => '#^Parameter \\#4 \\$eventBus of class Gember\\\\EventSourcing\\\\Repository\\\\EventSourced\\\\EventSourcedUseCaseRepository constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Messaging\\\\MessageBus\\\\EventBus, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -254,7 +254,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$repository of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStoreRepository, mixed given\\.$#',
+	'message' => '#^Parameter \\#4 \\$repository of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\DependencyContracts\\\\EventStore\\\\Rdbms\\\\RdbmsEventStoreRepository, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
