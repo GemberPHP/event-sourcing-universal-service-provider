@@ -8,37 +8,25 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\NormalizedEventName\\\\Attribute\\\\AttributeNormalizedEventNameResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\Common\\\\DomainTag\\\\Attribute\\\\AttributeDomainTagResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainMessage\\\\DomainTags\\\\Attribute\\\\AttributeDomainTagsResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\Default\\\\EventName\\\\Attribute\\\\AttributeEventNameResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\CommandHandlers\\\\Attribute\\\\AttributeCommandHandlersResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\Default\\\\CommandHandler\\\\Attribute\\\\AttributeCommandHandlerResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\DomainTagProperties\\\\Attribute\\\\AttributeDomainTagsPropertiesResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\SubscribedEvents\\\\Attribute\\\\AttributeSubscribedEventsResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\SubscriberMethodForEvent\\\\Attribute\\\\AttributeSubscriberMethodForEventResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$attributeResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\Default\\\\EventSubscriber\\\\Attribute\\\\AttributeEventSubscriberResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\AttributeResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -50,25 +38,37 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$domainTagsResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainMessage\\\\DomainTags\\\\DomainTagsResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$domainEventResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainEventResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$domainEventResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainEventResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$domainEventResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainEventResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$domainTagResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainCommand\\\\Default\\\\DefaultDomainCommandResolver constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\Common\\\\DomainTag\\\\DomainTagResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$domainTagResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\Default\\\\DefaultUseCaseResolver constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\Common\\\\DomainTag\\\\DomainTagResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$eventBus of class Gember\\\\MessageBusSymfony\\\\SymfonyEventBus constructor expects Symfony\\\\Component\\\\Messenger\\\\MessageBusInterface, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventNameResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\NormalizedEventName\\\\NormalizedEventNameResolver, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$eventNameResolver of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\NormalizedEventName\\\\NormalizedEventNameResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -92,7 +92,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\NormalizedEventName\\\\ClassName\\\\ClassNameNormalizedEventNameResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
+	'message' => '#^Parameter \\#1 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\Default\\\\EventName\\\\ClassName\\\\ClassNameEventNameResolver constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -152,6 +152,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$domainTagResolver of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\Default\\\\DefaultDomainEventResolver constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\Common\\\\DomainTag\\\\DomainTagResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$eventRegistry of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsDomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Registry\\\\Event\\\\EventRegistry, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -159,12 +165,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$eventStoreTableSchema of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\DoctrineDbalRdbmsEventStoreRepository constructor expects Gember\\\\RdbmsEventStoreDoctrineDbal\\\\TableSchema\\\\EventStoreTableSchema, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Util\\\\Attribute\\\\Resolver\\\\Cached\\\\CachedAttributeResolverDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -200,19 +200,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$commandHandlersResolver of class Gember\\\\EventSourcing\\\\Registry\\\\CommandHandler\\\\Reflector\\\\ReflectorCommandHandlerRegistry constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\CommandHandlers\\\\CommandHandlersResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$domainCommandResolver of class Gember\\\\EventSourcing\\\\UseCase\\\\CommandHandler\\\\UseCaseCommandHandler constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainCommand\\\\DomainCommandResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$domainTagsResolver of class Gember\\\\EventSourcing\\\\UseCase\\\\CommandHandler\\\\UseCaseCommandHandler constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainMessage\\\\DomainTags\\\\DomainTagsResolver, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$eventNameResolver of class Gember\\\\EventSourcing\\\\Registry\\\\Event\\\\Reflector\\\\ReflectorEventRegistry constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\NormalizedEventName\\\\NormalizedEventNameResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$domainEventResolver of class Gember\\\\EventSourcing\\\\Registry\\\\Event\\\\Reflector\\\\ReflectorEventRegistry constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\DomainEventResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -230,13 +224,37 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainCommand\\\\Cached\\\\CachedDomainCommandResolverDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Resolver\\\\DomainEvent\\\\Cached\\\\CachedDomainEventResolverDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$friendlyClassNamer of class Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\Cached\\\\CachedUseCaseResolverDecorator constructor expects Gember\\\\EventSourcing\\\\Util\\\\String\\\\FriendlyClassNamer\\\\FriendlyClassNamer, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$rdbmsEventFactory of class Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventStore constructor expects Gember\\\\EventSourcing\\\\EventStore\\\\Rdbms\\\\RdbmsEventFactory, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subscribedEventsResolver of class Gember\\\\EventSourcing\\\\Repository\\\\EventSourced\\\\EventSourcedUseCaseRepository constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\SubscribedEvents\\\\SubscribedEventsResolver, mixed given\\.$#',
+	'message' => '#^Parameter \\#3 \\$useCaseResolver of class Gember\\\\EventSourcing\\\\Registry\\\\CommandHandler\\\\Reflector\\\\ReflectorCommandHandlerRegistry constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\UseCaseResolver, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$useCaseResolver of class Gember\\\\EventSourcing\\\\Repository\\\\EventSourced\\\\EventSourcedUseCaseRepository constructor expects Gember\\\\EventSourcing\\\\Resolver\\\\UseCase\\\\UseCaseResolver, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
