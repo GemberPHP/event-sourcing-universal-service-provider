@@ -19,26 +19,27 @@ use Gember\EventSourcing\Registry\Event\EventRegistry;
 use Gember\EventSourcing\Registry\Event\Reflector\ReflectorEventRegistry;
 use Gember\EventSourcing\Repository\UseCaseRepository;
 use Gember\EventSourcing\Repository\EventSourced\EventSourcedUseCaseRepository;
-use Gember\EventSourcing\Resolver\UseCase\CommandHandlers\Attribute\AttributeCommandHandlersResolver;
-use Gember\EventSourcing\Resolver\UseCase\CommandHandlers\CommandHandlersResolver;
-use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\Attribute\AttributeDomainTagsPropertiesResolver;
-use Gember\EventSourcing\Resolver\UseCase\DomainTagProperties\DomainTagsPropertiesResolver;
-use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\Attribute\AttributeSubscribedEventsResolver;
-use Gember\EventSourcing\Resolver\UseCase\SubscribedEvents\SubscribedEventsResolver;
-use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\Attribute\AttributeSubscriberMethodForEventResolver;
-use Gember\EventSourcing\Resolver\UseCase\SubscriberMethodForEvent\SubscriberMethodForEventResolver;
-use Gember\EventSourcing\Resolver\DomainMessage\DomainTags\Attribute\AttributeDomainTagsResolver;
-use Gember\EventSourcing\Resolver\DomainMessage\DomainTags\DomainTagsResolver;
-use Gember\EventSourcing\Resolver\DomainMessage\DomainTags\Interface\InterfaceDomainTagsResolver;
-use Gember\EventSourcing\Resolver\DomainMessage\DomainTags\Stacked\StackedDomainTagsResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Attribute\AttributeNormalizedEventNameResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\ClassName\ClassNameNormalizedEventNameResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Interface\InterfaceNormalizedEventNameResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\NormalizedEventNameResolver;
-use Gember\EventSourcing\Resolver\DomainEvent\NormalizedEventName\Stacked\StackedNormalizedEventNameResolver;
+use Gember\EventSourcing\Resolver\Common\DomainTag\Attribute\AttributeDomainTagResolver;
+use Gember\EventSourcing\Resolver\Common\DomainTag\DomainTagResolver;
+use Gember\EventSourcing\Resolver\Common\DomainTag\Interface\InterfaceDomainTagResolver;
+use Gember\EventSourcing\Resolver\Common\DomainTag\Stacked\StackedDomainTagResolver;
+use Gember\EventSourcing\Resolver\DomainCommand\Cached\CachedDomainCommandResolverDecorator;
+use Gember\EventSourcing\Resolver\DomainCommand\Default\DefaultDomainCommandResolver;
+use Gember\EventSourcing\Resolver\DomainCommand\DomainCommandResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\Cached\CachedDomainEventResolverDecorator;
+use Gember\EventSourcing\Resolver\DomainEvent\Default\DefaultDomainEventResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\Default\EventName\Attribute\AttributeEventNameResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\Default\EventName\ClassName\ClassNameEventNameResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\Default\EventName\Interface\InterfaceEventNameResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\Default\EventName\Stacked\StackedEventNameResolver;
+use Gember\EventSourcing\Resolver\DomainEvent\DomainEventResolver;
+use Gember\EventSourcing\Resolver\UseCase\Cached\CachedUseCaseResolverDecorator;
+use Gember\EventSourcing\Resolver\UseCase\Default\CommandHandler\Attribute\AttributeCommandHandlerResolver;
+use Gember\EventSourcing\Resolver\UseCase\Default\DefaultUseCaseResolver;
+use Gember\EventSourcing\Resolver\UseCase\Default\EventSubscriber\Attribute\AttributeEventSubscriberResolver;
+use Gember\EventSourcing\Resolver\UseCase\UseCaseResolver;
 use Gember\EventSourcing\UseCase\CommandHandler\UseCaseCommandHandler;
 use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
-use Gember\EventSourcing\Util\Attribute\Resolver\Cached\CachedAttributeResolverDecorator;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
 use Gember\EventSourcing\Util\File\Finder\Finder;
 use Gember\EventSourcing\Util\File\Finder\Native\NativeFinder;
@@ -129,8 +130,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             DoctrineDbalRdbmsEventFactory::class => self::createDoctrineDbalRdbmsEventFactory(...),
             UseCaseRepository::class => self::createUseCaseRepository(...),
             DomainEventEnvelopeFactory::class => self::createDomainEventEnvelopeFactory(...),
-            DomainTagsPropertiesResolver::class => self::createDomainTagsPropertiesResolver(...),
-            DomainTagsResolver::class => self::createDomainTagsResolver(...),
             EventBus::class => self::createEventBus(...),
             EventRegistry::class => self::createEventRegistry(...),
             EventStore::class => self::createEventStore(...),
@@ -140,19 +139,19 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             FriendlyClassNamer::class => self::createFriendlyClassNamer(...),
             IdentityGenerator::class => self::createIdentityGenerator(...),
             Inflector::class => self::createInflector(...),
-            NormalizedEventNameResolver::class => self::createNormalizedEventNameResolver(...),
             RdbmsDomainEventEnvelopeFactory::class => self::createRdbmsDomainEventEnvelopeFactory(...),
             RdbmsEventFactory::class => self::createRdbmsEventFactory(...),
             RdbmsEventStoreRepository::class => self::createRdbmsEventStoreRepository(...),
             Reflector::class => self::createReflector(...),
             Serializer::class  => self::createSerializer(...),
-            SubscribedEventsResolver::class => self::createSubscribedEventsResolver(...),
-            SubscriberMethodForEventResolver::class => self::createSubscriberMethodForEventResolver(...),
             SymfonyUlidIdentityGenerator::class => self::createSymfonyUlidIdentityGenerator(...),
             SymfonyUuidIdentityGenerator::class => self::createSymfonyUuidIdentityGenerator(...),
             CommandHandlerRegistry::class => self::createCommandHandlerRegistry(...),
-            CommandHandlersResolver::class => self::createCommandHandlersResolver(...),
             UseCaseCommandHandler::class => self::createUseCaseCommandHandler(...),
+            DomainTagResolver::class => self::createDomainTagResolver(...),
+            DomainCommandResolver::class => self::createDomainCommandResolver(...),
+            DomainEventResolver::class => self::createDomainEventResolver(...),
+            UseCaseResolver::class => self::createUseCaseResolver(...),
         ];
     }
 
@@ -162,33 +161,9 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return [];
     }
 
-    public static function createAttributeResolver(ContainerInterface $container): AttributeResolver
+    public static function createAttributeResolver(): AttributeResolver
     {
-        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
-
-        $resolver = new ReflectorAttributeResolver();
-
-        if ($cacheEnabled) {
-            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
-
-            if ($psr6Adapter !== null) {
-                $cache = new Psr16Cache($psr6Adapter);
-            } else {
-                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
-                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
-                }
-
-                $cache = self::getConfiguration($container)['cache']['psr16'];
-            }
-
-            return new CachedAttributeResolverDecorator(
-                $resolver,
-                $container->get(FriendlyClassNamer::class),
-                $cache,
-            );
-        }
-
-        return $resolver;
+        return new ReflectorAttributeResolver();
     }
 
     public static function createClock(): Clock
@@ -206,7 +181,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return new EventSourcedUseCaseRepository(
             $container->get(EventStore::class),
             $container->get(DomainEventEnvelopeFactory::class),
-            $container->get(SubscribedEventsResolver::class),
+            $container->get(UseCaseResolver::class),
             $container->get(EventBus::class),
         );
     }
@@ -214,23 +189,10 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createDomainEventEnvelopeFactory(ContainerInterface $container): DomainEventEnvelopeFactory
     {
         return new DomainEventEnvelopeFactory(
-            $container->get(DomainTagsResolver::class),
+            $container->get(DomainEventResolver::class),
             $container->get(IdentityGenerator::class),
             $container->get(Clock::class),
         );
-    }
-
-    public static function createDomainTagsPropertiesResolver(ContainerInterface $container): DomainTagsPropertiesResolver
-    {
-        return new AttributeDomainTagsPropertiesResolver($container->get(AttributeResolver::class));
-    }
-
-    public static function createDomainTagsResolver(ContainerInterface $container): DomainTagsResolver
-    {
-        return new StackedDomainTagsResolver([
-            new AttributeDomainTagsResolver($container->get(AttributeResolver::class)),
-            new InterfaceDomainTagsResolver(),
-        ]);
     }
 
     public static function createEventBus(ContainerInterface $container): EventBus
@@ -248,7 +210,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         $registry = new ReflectorEventRegistry(
             $container->get(Finder::class),
             $container->get(Reflector::class),
-            $container->get(NormalizedEventNameResolver::class),
+            $container->get(DomainEventResolver::class),
             self::getConfiguration($container)['registry']['event']['reflector']['path']
             ?? getcwd() . '/../src',
         );
@@ -275,7 +237,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createEventStore(ContainerInterface $container): EventStore
     {
         return new RdbmsEventStore(
-            $container->get(NormalizedEventNameResolver::class),
+            $container->get(DomainEventResolver::class),
             $container->get(RdbmsDomainEventEnvelopeFactory::class),
             $container->get(RdbmsEventFactory::class),
             $container->get(RdbmsEventStoreRepository::class),
@@ -313,15 +275,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return new NativeInflector();
     }
 
-    public static function createNormalizedEventNameResolver(ContainerInterface $container): NormalizedEventNameResolver
-    {
-        return new StackedNormalizedEventNameResolver([
-            new AttributeNormalizedEventNameResolver($container->get(AttributeResolver::class)),
-            new InterfaceNormalizedEventNameResolver(),
-            new ClassNameNormalizedEventNameResolver($container->get(FriendlyClassNamer::class)),
-        ]);
-    }
-
     public static function createRdbmsDomainEventEnvelopeFactory(ContainerInterface $container): RdbmsDomainEventEnvelopeFactory
     {
         return new RdbmsDomainEventEnvelopeFactory(
@@ -333,7 +286,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     public static function createRdbmsEventFactory(ContainerInterface $container): RdbmsEventFactory
     {
         return new RdbmsEventFactory(
-            $container->get(NormalizedEventNameResolver::class),
+            $container->get(DomainEventResolver::class),
             $container->get(Serializer::class),
         );
     }
@@ -362,16 +315,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         );
     }
 
-    public static function createSubscribedEventsResolver(ContainerInterface $container): SubscribedEventsResolver
-    {
-        return new AttributeSubscribedEventsResolver($container->get(AttributeResolver::class));
-    }
-
-    public static function createSubscriberMethodForEventResolver(ContainerInterface $container): SubscriberMethodForEventResolver
-    {
-        return new AttributeSubscriberMethodForEventResolver($container->get(AttributeResolver::class));
-    }
-
     public static function createSymfonyUlidIdentityGenerator(ContainerInterface $container): SymfonyUlidIdentityGenerator
     {
         return new SymfonyUlidIdentityGenerator($container->get(UlidFactory::class));
@@ -389,7 +332,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         $registry = new ReflectorCommandHandlerRegistry(
             $container->get(Finder::class),
             $container->get(Reflector::class),
-            $container->get(CommandHandlersResolver::class),
+            $container->get(UseCaseResolver::class),
             self::getConfiguration($container)['registry']['command_handler']['reflector']['path']
             ?? getcwd() . '/../src',
         );
@@ -413,18 +356,123 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return $registry;
     }
 
-    public static function createCommandHandlersResolver(ContainerInterface $container): CommandHandlersResolver
-    {
-        return new AttributeCommandHandlersResolver($container->get(AttributeResolver::class));
-    }
-
     public static function createUseCaseCommandHandler(ContainerInterface $container): UseCaseCommandHandler
     {
         return new UseCaseCommandHandler(
             $container->get(UseCaseRepository::class),
-            $container->get(CommandHandlersResolver::class),
-            $container->get(DomainTagsResolver::class),
+            $container->get(CommandHandlerRegistry::class),
+            $container->get(DomainCommandResolver::class),
         );
+    }
+
+    public static function createDomainTagResolver(ContainerInterface $container): DomainTagResolver
+    {
+        return new StackedDomainTagResolver([
+            new AttributeDomainTagResolver($container->get(AttributeResolver::class)),
+            new InterfaceDomainTagResolver(),
+        ]);
+    }
+
+    public static function createDomainCommandResolver(ContainerInterface $container): DomainCommandResolver
+    {
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
+
+        $resolver = new DefaultDomainCommandResolver(
+            $container->get(DomainTagResolver::class),
+        );
+
+        if ($cacheEnabled) {
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
+            return new CachedDomainCommandResolverDecorator(
+                $resolver,
+                $cache,
+                $container->get(FriendlyClassNamer::class),
+            );
+        }
+
+        return $resolver;
+    }
+
+    public static function createDomainEventResolver(ContainerInterface $container): DomainEventResolver
+    {
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
+
+        $resolver = new DefaultDomainEventResolver(
+            new StackedEventNameResolver(
+                [
+                    new AttributeEventNameResolver($container->get(AttributeResolver::class)),
+                    new InterfaceEventNameResolver(),
+                ],
+                new ClassNameEventNameResolver($container->get(FriendlyClassNamer::class)),
+            ),
+            $container->get(DomainTagResolver::class),
+        );
+
+        if ($cacheEnabled) {
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
+            return new CachedDomainEventResolverDecorator(
+                $resolver,
+                $cache,
+                $container->get(FriendlyClassNamer::class),
+            );
+        }
+
+        return $resolver;
+    }
+
+    public static function createUseCaseResolver(ContainerInterface $container): UseCaseResolver
+    {
+        $cacheEnabled = self::getConfiguration($container)['cache']['enabled'] ?? false;
+
+        $resolver = new DefaultUseCaseResolver(
+            $container->get(DomainTagResolver::class),
+            new AttributeCommandHandlerResolver($container->get(AttributeResolver::class)),
+            new AttributeEventSubscriberResolver($container->get(AttributeResolver::class)),
+        );
+
+        if ($cacheEnabled) {
+            $psr6Adapter = self::getConfiguration($container)['cache']['psr6'] ?? null;
+
+            if ($psr6Adapter !== null) {
+                $cache = new Psr16Cache($psr6Adapter);
+            } else {
+                if (!isset(self::getConfiguration($container)['cache']['psr16'])) {
+                    throw new Exception('Missing PSR-6 or PSR-16 cache adapter');
+                }
+
+                $cache = self::getConfiguration($container)['cache']['psr16'];
+            }
+
+            return new CachedUseCaseResolverDecorator(
+                $resolver,
+                $cache,
+                $container->get(FriendlyClassNamer::class),
+            );
+        }
+
+        return $resolver;
     }
 
     /**
