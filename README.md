@@ -29,6 +29,7 @@ return [
         'message_bus' => [
             'symfony' => [
                 'event_bus' => $container->get('event.bus'),
+                'command_bus' => $container->get('command.bus'),
             ],
         ],
         'cache' => [
@@ -69,6 +70,22 @@ return [
                     // default: getcwd() . '/../src'
                 ],
             ],
+            'saga' => [
+                'reflector' => [
+                    'path' => '/path/to/src',
+                    // default: getcwd() . '/../src'
+                ],
+            ],
+        ],
+        'logging' => [
+            // 'logger' => $container->get(LoggerInterface::class),
+        ],
+        'snapshot' => [
+            'enabled' => false,
+        ],
+        'dispatch' => [
+            'strategy' => 'direct', // 'direct' or 'outbox'
+            'max_retries' => 5,     // only used with outbox strategy
         ],
     ],
 ];
@@ -81,10 +98,10 @@ You can override any of these defaults however you like.
 Some of the required dependencies also need to be configured separately.
 
 ### Symfony Messenger (`symfony/messenger`)
-The default configuration makes use of a service with name `event.bus`.
+The default configuration makes use of services with name `event.bus` and `command.bus`.
 
-When this bus is configured, _Gember Event Sourcing_ works out of the box.
-However, when a different event bus is preferred, it must be a service implementing `Symfony\Component\Messenger\MessageBusInterface`.
+When these buses are configured, _Gember Event Sourcing_ works out of the box.
+However, when different buses are preferred, they must be services implementing `Symfony\Component\Messenger\MessageBusInterface`.
 
 Example (minimum) configuration for [symfony/messenger](https://github.com/symfony/messenger):
 
@@ -107,6 +124,16 @@ return [
                 ]),
             ],
         ]), allowNoHandlers: true),
+    ]),
+    'command.bus' => fn(ContainerInterface $container) => new MessageBus([
+        new HandleMessageMiddleware(new HandlersLocator([
+            SomeCommand::class => [
+                new HandlerDescriptor([
+                    $container->get(SomeCommandHandler::class),
+                    '__invoke'
+                ]),
+            ],
+        ])),
     ]),
 ];
 ```
@@ -185,8 +212,8 @@ return [
 ```
 
 ## Database
-In order to persist all domain events in database, a running SQL database is needed.
-The event store requires two tables. Schema is available in either raw SQL or in a migration file format:
+In order to persist domain events, sagas, snapshots, and outbox messages, a running SQL database is needed.
+Schema is available in either raw SQL or in a migration file format:
 
 Raw SQL schema: https://github.com/GemberPHP/rdbms-event-store-doctrine-dbal/blob/main/resources/schema.sql
 
