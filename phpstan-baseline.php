@@ -260,6 +260,18 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$clock of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\EventSourcing\\\\Util\\\\Time\\\\Clock\\\\Clock, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$eventStore of class Gember\\\\EventSourcing\\\\Repository\\\\Snapshot\\\\SnapshotUseCaseRepositoryDecorator constructor expects Gember\\\\EventSourcing\\\\EventStore\\\\EventStore, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,

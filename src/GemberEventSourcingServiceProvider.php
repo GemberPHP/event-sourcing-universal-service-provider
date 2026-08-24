@@ -796,6 +796,8 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
                 self::getConnection($container),
                 $container->get(SnapshotStoreTableSchema::class),
             ),
+            $container->get(IdentityGenerator::class),
+            $container->get(Clock::class),
         );
 
         $logger = self::getLogger($container);
