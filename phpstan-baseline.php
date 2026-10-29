@@ -260,18 +260,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$clock of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\EventSourcing\\\\Util\\\\Time\\\\Clock\\\\Clock, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$eventStore of class Gember\\\\EventSourcing\\\\Repository\\\\Snapshot\\\\SnapshotUseCaseRepositoryDecorator constructor expects Gember\\\\EventSourcing\\\\EventStore\\\\EventStore, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -285,6 +273,12 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$identityGenerator of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -369,6 +363,12 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$clock of class Gember\\\\EventSourcing\\\\EventStore\\\\DomainEventEnvelopeFactory constructor expects Gember\\\\EventSourcing\\\\Util\\\\Time\\\\Clock\\\\Clock, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#3 \\$clock of class Gember\\\\EventSourcing\\\\Snapshot\\\\Rdbms\\\\RdbmsSnapshotStore constructor expects Gember\\\\EventSourcing\\\\Util\\\\Time\\\\Clock\\\\Clock, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -518,7 +518,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#4 \\$sagaStoreLockTableSchema of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineRdbmsSagaStoreRepository constructor expects Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\TableSchema\\\\SagaStoreLockTableSchema, mixed given\\.$#',
+	'message' => '#^Parameter \\#4 \\$sagaFactory of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineRdbmsSagaStoreRepository constructor expects Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineDbalRdbmsSagaFactory, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
@@ -542,25 +542,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#5 \\$identityGenerator of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineRdbmsSagaStoreRepository constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#5 \\$rdbmsEventFactory of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\DoctrineDbalRdbmsEventStoreRepository constructor expects Gember\\\\RdbmsEventStoreDoctrineDbal\\\\DoctrineDbalRdbmsEventFactory, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#5 \\$sagaFactory of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineRdbmsSagaStoreRepository constructor expects Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineDbalRdbmsSagaFactory, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#5 \\$serializer of class Gember\\\\EventSourcing\\\\Repository\\\\Snapshot\\\\SnapshotUseCaseRepositoryDecorator constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Serialization\\\\Serializer\\\\Serializer, mixed given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#6 \\$identityGenerator of class Gember\\\\RdbmsEventStoreDoctrineDbal\\\\Saga\\\\DoctrineRdbmsSagaStoreRepository constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Generator\\\\Identity\\\\IdentityGenerator, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
