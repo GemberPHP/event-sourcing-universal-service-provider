@@ -763,8 +763,12 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             );
         }
 
-        // Retrying decorator (outermost: each retry runs in its own transaction)
-        return new RetryingSagaEventExecutorDecorator($executor);
+        // Retrying decorator (outermost: each retry runs in its own transaction; no retries inside a transaction it didn't open)
+        return new RetryingSagaEventExecutorDecorator(
+            $executor,
+            $container->get(Transactional::class),
+            $logger,
+        );
     }
 
     public static function createSagaEventHandler(ContainerInterface $container): SagaEventHandler
