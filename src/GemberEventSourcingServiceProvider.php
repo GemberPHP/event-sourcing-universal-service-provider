@@ -75,6 +75,7 @@ use Gember\EventSourcing\Resolver\UseCase\Default\Snapshot\Attribute\AttributeSn
 use Gember\EventSourcing\Resolver\UseCase\UseCaseResolver;
 use Gember\EventSourcing\Saga\Default\DefaultSagaEventExecutor;
 use Gember\EventSourcing\Saga\Loggable\LoggableSagaEventExecutorDecorator;
+use Gember\EventSourcing\Saga\Retrying\RetryingSagaEventExecutorDecorator;
 use Gember\EventSourcing\Saga\SagaEventExecutor;
 use Gember\EventSourcing\Saga\SagaEventHandler;
 use Gember\EventSourcing\Saga\Transactional\TransactionalSagaEventExecutorDecorator;
@@ -113,7 +114,6 @@ use Gember\RdbmsEventStoreDoctrineDbal\Outbox\DoctrineDbalRdbmsOutboxRepository;
 use Gember\RdbmsEventStoreDoctrineDbal\Outbox\TableSchema\OutboxTableSchemaFactory;
 use Gember\RdbmsEventStoreDoctrineDbal\Saga\DoctrineDbalRdbmsSagaFactory;
 use Gember\RdbmsEventStoreDoctrineDbal\Saga\DoctrineRdbmsSagaStoreRepository;
-use Gember\RdbmsEventStoreDoctrineDbal\Saga\TableSchema\SagaStoreLockTableSchema;
 use Gember\RdbmsEventStoreDoctrineDbal\Saga\TableSchema\SagaStoreRelationTableSchema;
 use Gember\RdbmsEventStoreDoctrineDbal\Saga\TableSchema\SagaStoreTableSchema;
 use Gember\RdbmsEventStoreDoctrineDbal\Saga\TableSchema\SagaTableSchemaFactory;
@@ -264,7 +264,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             SagaFactory::class => self::createSagaFactory(...),
             SagaStoreTableSchema::class => self::createSagaStoreTableSchema(...),
             SagaStoreRelationTableSchema::class => self::createSagaStoreRelationTableSchema(...),
-            SagaStoreLockTableSchema::class => self::createSagaStoreLockTableSchema(...),
             DoctrineDbalRdbmsSagaFactory::class => self::createDoctrineDbalRdbmsSagaFactory(...),
             RdbmsSagaStoreRepository::class => self::createRdbmsSagaStoreRepository(...),
             SagaStore::class => self::createSagaStore(...),
@@ -713,11 +712,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         return SagaTableSchemaFactory::createDefaultSagaStoreRelation();
     }
 
-    public static function createSagaStoreLockTableSchema(): SagaStoreLockTableSchema
-    {
-        return SagaTableSchemaFactory::createDefaultSagaStoreLock();
-    }
-
     public static function createDoctrineDbalRdbmsSagaFactory(): DoctrineDbalRdbmsSagaFactory
     {
         return new DoctrineDbalRdbmsSagaFactory();
@@ -729,7 +723,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             self::getConnection($container),
             $container->get(SagaStoreTableSchema::class),
             $container->get(SagaStoreRelationTableSchema::class),
-            $container->get(SagaStoreLockTableSchema::class),
             $container->get(DoctrineDbalRdbmsSagaFactory::class),
             $container->get(IdentityGenerator::class),
         );
@@ -770,7 +763,8 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             );
         }
 
-        return $executor;
+        // Retrying decorator (outermost: each retry runs in its own transaction)
+        return new RetryingSagaEventExecutorDecorator($executor);
     }
 
     public static function createSagaEventHandler(ContainerInterface $container): SagaEventHandler
