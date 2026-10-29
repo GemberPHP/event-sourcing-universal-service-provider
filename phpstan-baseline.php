@@ -356,6 +356,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#2 \\$transactional of class Gember\\\\EventSourcing\\\\Saga\\\\Retrying\\\\RetryingSagaEventExecutorDecorator constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Transaction\\\\Transactional, mixed given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/GemberEventSourcingServiceProvider.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$transactional of class Gember\\\\EventSourcing\\\\Saga\\\\Transactional\\\\TransactionalSagaEventExecutorDecorator constructor expects Gember\\\\DependencyContracts\\\\Util\\\\Transaction\\\\Transactional, mixed given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
