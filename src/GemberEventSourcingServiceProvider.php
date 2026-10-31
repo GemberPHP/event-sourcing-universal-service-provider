@@ -820,6 +820,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(Serializer::class),
             $container->get(IdentityGenerator::class),
             $container->get(Clock::class),
+            self::getLogger($container),
         );
     }
 
