@@ -496,7 +496,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             return new CachedDomainEventResolverDecorator(
                 $resolver,
                 self::getCache($container),
-                $container->get(FriendlyClassNamer::class),
             );
         }
 
@@ -513,7 +512,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             return new CachedDomainCommandResolverDecorator(
                 $resolver,
                 self::getCache($container),
-                $container->get(FriendlyClassNamer::class),
             );
         }
 
@@ -533,7 +531,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $resolver = new CachedUseCaseResolverDecorator(
                 $resolver,
                 self::getCache($container),
-                $container->get(FriendlyClassNamer::class),
             );
         }
 
@@ -571,7 +568,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             return new CachedSagaResolverDecorator(
                 $resolver,
                 self::getCache($container),
-                $container->get(FriendlyClassNamer::class),
             );
         }
 
@@ -611,7 +607,6 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             return new CachedCommandHandlerRegistryDecorator(
                 $registry,
                 self::getCache($container),
-                $container->get(FriendlyClassNamer::class),
             );
         }
 
