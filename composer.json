@@ -22,6 +22,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "composer-runtime-api": "^2.0",
         "container-interop/service-provider": "^0.4.1",
         "doctrine/dbal": "^4.2",
         "gember/dependency-contracts": "^0.9",
