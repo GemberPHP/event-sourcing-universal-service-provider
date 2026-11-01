@@ -20,7 +20,8 @@ By default, it uses the following configuration:
 **PSR-11 Container definition (https://www.php-fig.org/psr/psr-11):**
 ```php
 use Doctrine\DBAL\Connection;
-use Gember\IdentityGeneratorSymfony\Ulid\SymfonyUuidIdentityGenerator;
+use Gember\IdentityGeneratorSymfony\Ulid\SymfonyUlidIdentityGenerator;
+use Gember\IdentityGeneratorSymfony\Uuid\SymfonyUuidIdentityGenerator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Serializer\Serializer;
 
@@ -93,6 +94,8 @@ return [
 
 You can override any of these defaults however you like.
 
+The identity generators use `Symfony\Component\Uid\Factory\UuidFactory` / `UlidFactory` from the container when it has them, and create default factories otherwise.
+
 ## Required dependencies
 
 Some of the required dependencies also need to be configured separately.
@@ -103,10 +106,14 @@ The default configuration makes use of services with name `event.bus` and `comma
 When these buses are configured, _Gember Event Sourcing_ works out of the box.
 However, when different buses are preferred, they must be services implementing `Symfony\Component\Messenger\MessageBusInterface`.
 
+Commands with `#[DomainCommandHandler]` methods must be routed to `UseCaseCommandHandler`, and events that sagas subscribe to (`#[SagaEventSubscriber]`) to `SagaEventHandler`; both are registered by the service provider.
+
 Example (minimum) configuration for [symfony/messenger](https://github.com/symfony/messenger):
 
 **PSR-11 Container definition (https://www.php-fig.org/psr/psr-11):**
 ```php
+use Gember\EventSourcing\Saga\SagaEventHandler;
+use Gember\EventSourcing\UseCase\CommandHandler\UseCaseCommandHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
@@ -119,17 +126,23 @@ return [
             // Ideally this could be autoconfigured
             SomeDomainEvent::class => [
                 new HandlerDescriptor([
-                    $container->get(SomeProjector::class), 
+                    $container->get(SomeProjector::class),
                     'onSomeDomainEvent'
+                ]),
+                // When a saga subscribes to this event
+                new HandlerDescriptor([
+                    $container->get(SagaEventHandler::class),
+                    '__invoke'
                 ]),
             ],
         ]), allowNoHandlers: true),
     ]),
     'command.bus' => fn(ContainerInterface $container) => new MessageBus([
         new HandleMessageMiddleware(new HandlersLocator([
+            // A command handled by a #[DomainCommandHandler] method on a use case
             SomeCommand::class => [
                 new HandlerDescriptor([
-                    $container->get(SomeCommandHandler::class),
+                    $container->get(UseCaseCommandHandler::class),
                     '__invoke'
                 ]),
             ],
@@ -139,10 +152,7 @@ return [
 ```
 
 ### Symfony Cache (`symfony/cache`)
-The default configuration makes use of a service with name `cache.file`.
-
-When this cache service is configured, _Gember Event Sourcing_ works out of the box.
-However, when a different cache pool is preferred, it must be a service implementing `Psr\Cache\CacheItemPoolInterface` (PSR-6) or `Psr\SimpleCache\CacheInterface` (PSR-16).
+Caching is disabled by default. To enable it, set `cache.enabled` to `true` and pass a service implementing `Psr\Cache\CacheItemPoolInterface` (`psr6`) or `Psr\SimpleCache\CacheInterface` (`psr16`), e.g. a `cache.file` service as below.
 
 Example (minimum) configuration for [symfony/cache](https://github.com/symfony/cache):
 
@@ -185,7 +195,7 @@ return [
 ];
 ```
 
-### Doctrine DBAL/ORM (`doctrine/dbal`, `doctrine/orm`)
+### Doctrine DBAL (`doctrine/dbal`)
 The default configuration makes use of a service with name `Doctrine\DBAL\Connection`.
 
 When this connection service is configured, _Gember Event Sourcing_ works out of the box.
@@ -212,14 +222,10 @@ return [
 ```
 
 ## Database
-In order to persist domain events, sagas, snapshots, and outbox messages, a running SQL database is needed.
-Schema is available in either raw SQL or in a migration file format:
+Events, sagas, snapshots and outbox messages are stored in MySQL, MariaDB (InnoDB) or SQLite. Create the tables with the migrations or schema of [gember/rdbms-event-store-doctrine-dbal](https://github.com/GemberPHP/rdbms-event-store-doctrine-dbal#database), and see [Upgrading](https://gemberphp.github.io/event-sourcing/upgrading/) when upgrading.
 
-Raw SQL schema: https://github.com/GemberPHP/rdbms-event-store-doctrine-dbal/blob/main/resources/schema.sql
-
-Migrations:
-- Doctrine migrations: https://github.com/GemberPHP/rdbms-event-store-doctrine-dbal/blob/main/resources/migrations/doctrine
-- Phinx migrations: https://github.com/GemberPHP/rdbms-event-store-doctrine-dbal/tree/main/resources/migrations/phinx
+## Outbox
+With `dispatch.strategy` set to `outbox`, messages are dispatched by `Gember\EventSourcing\Outbox\Processor\OutboxProcessor`. There is no console command outside Symfony: run `$container->get(OutboxProcessor::class)->process(limit: 100)` in your own loop or cron job, outside any transaction. See [Outbox](https://gemberphp.github.io/event-sourcing/usage/outbox/#without-symfony).
 
 ## Good to go!
 Check the main package [gember/event-sourcing](https://github.com/GemberPHP/event-sourcing) or
