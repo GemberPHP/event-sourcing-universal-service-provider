@@ -329,12 +329,16 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
 
     public static function createSymfonyUuidIdentityGenerator(ContainerInterface $container): SymfonyUuidIdentityGenerator
     {
-        return new SymfonyUuidIdentityGenerator($container->get(UuidFactory::class));
+        return new SymfonyUuidIdentityGenerator(
+            $container->has(UuidFactory::class) ? $container->get(UuidFactory::class) : new UuidFactory(),
+        );
     }
 
     public static function createSymfonyUlidIdentityGenerator(ContainerInterface $container): SymfonyUlidIdentityGenerator
     {
-        return new SymfonyUlidIdentityGenerator($container->get(UlidFactory::class));
+        return new SymfonyUlidIdentityGenerator(
+            $container->has(UlidFactory::class) ? $container->get(UlidFactory::class) : new UlidFactory(),
+        );
     }
 
     // -- Serializer --
