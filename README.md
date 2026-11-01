@@ -62,19 +62,19 @@ return [
             'event' => [
                 'reflector' => [
                     'path' => '/path/to/src',
-                    // default: getcwd() . '/../src'
+                    // default: the src/ directory next to your root composer.json
                 ],
             ],
             'command_handler' => [
                 'reflector' => [
                     'path' => '/path/to/src',
-                    // default: getcwd() . '/../src'
+                    // default: the src/ directory next to your root composer.json
                 ],
             ],
             'saga' => [
                 'reflector' => [
                     'path' => '/path/to/src',
-                    // default: getcwd() . '/../src'
+                    // default: the src/ directory next to your root composer.json
                 ],
             ],
         ],

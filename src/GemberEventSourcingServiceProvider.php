@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Gember\EventSourcingUniversalServiceProvider;
 
+use Composer\InstalledVersions;
 use Doctrine\DBAL\Connection;
 use Exception;
 use Gember\DependencyContracts\EventStore\Rdbms\RdbmsEventStoreRepository;
@@ -583,7 +584,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(Reflector::class),
             $container->get(DomainEventResolver::class),
             self::getConfiguration($container)['registry']['event']['reflector']['path']
-            ?? getcwd() . '/../src',
+            ?? self::getDefaultSourcePath(),
         );
 
         if (self::isCacheEnabled($container)) {
@@ -600,7 +601,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(Reflector::class),
             $container->get(UseCaseResolver::class),
             self::getConfiguration($container)['registry']['command_handler']['reflector']['path']
-            ?? getcwd() . '/../src',
+            ?? self::getDefaultSourcePath(),
         );
 
         if (self::isCacheEnabled($container)) {
@@ -621,7 +622,7 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
             $container->get(SagaResolver::class),
             $container->get(SagaEventSubscriberResolver::class),
             self::getConfiguration($container)['registry']['saga']['reflector']['path']
-            ?? getcwd() . '/../src',
+            ?? self::getDefaultSourcePath(),
         );
 
         if (self::isCacheEnabled($container)) {
@@ -865,6 +866,21 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
     {
         /** @var ConfigurationPayload */
         return $container->get('gember_event_sourcing');
+    }
+
+    /**
+     * The `src/` directory of the application: the directory of its root composer.json, whatever the working
+     * directory is (e.g. `public/` for a web request, the project directory for a worker).
+     */
+    private static function getDefaultSourcePath(): string
+    {
+        $projectDirectory = realpath(InstalledVersions::getRootPackage()['install_path']);
+
+        if ($projectDirectory === false) {
+            throw new Exception('Cannot determine the project directory: configure the registry paths');
+        }
+
+        return $projectDirectory . '/src';
     }
 
     private static function getConnection(ContainerInterface $container): Connection
