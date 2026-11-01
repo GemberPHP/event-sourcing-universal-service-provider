@@ -89,6 +89,7 @@ use Gember\EventSourcing\UseCase\CommandHandler\Default\DefaultUseCaseCommandExe
 use Gember\EventSourcing\UseCase\CommandHandler\Loggable\LoggableUseCaseCommandExecutorDecorator;
 use Gember\EventSourcing\UseCase\CommandHandler\UseCaseCommandExecutor;
 use Gember\EventSourcing\UseCase\CommandHandler\UseCaseCommandHandler;
+use Gember\EventSourcing\UseCase\UseCaseAttributeRegistry;
 use Gember\EventSourcing\Util\Attribute\Resolver\AttributeResolver;
 use Gember\EventSourcing\Util\Attribute\Resolver\Reflector\ReflectorAttributeResolver;
 use Gember\EventSourcing\Util\File\Finder\Finder;
@@ -529,12 +530,15 @@ final readonly class GemberEventSourcingServiceProvider implements ServiceProvid
         );
 
         if (self::isCacheEnabled($container)) {
-            return new CachedUseCaseResolverDecorator(
+            $resolver = new CachedUseCaseResolverDecorator(
                 $resolver,
                 self::getCache($container),
                 $container->get(FriendlyClassNamer::class),
             );
         }
+
+        // Use cases resolve their definition statically when applying events
+        UseCaseAttributeRegistry::initialize($resolver);
 
         return $resolver;
     }
